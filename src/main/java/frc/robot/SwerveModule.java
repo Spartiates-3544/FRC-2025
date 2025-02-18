@@ -68,7 +68,7 @@ public class SwerveModule {
     }
 
     public Rotation2d getCANcoder(){
-        return Rotation2d.fromRotations(angleEncoder.getAbsolutePosition().getValue().magnitude());   // TEST!!
+        return Rotation2d.fromRotations(angleEncoder.getAbsolutePosition().getValueAsDouble());   // TEST 2!!
     }
 
     public void resetToAbsolute(){
@@ -78,15 +78,15 @@ public class SwerveModule {
 
     public SwerveModuleState getState(){
         return new SwerveModuleState(
-            Conversions.RPSToMPS(mDriveMotor.getVelocity().getValue().magnitude(), Constants.Swerve.wheelCircumference), // TEST!!
-            Rotation2d.fromRotations(mAngleMotor.getPosition().getValue().magnitude())   // TEST!!!
+            Conversions.RPSToMPS(mDriveMotor.getVelocity().getValueAsDouble(), Constants.Swerve.wheelCircumference), // TEST 2!!
+            Rotation2d.fromRotations(mAngleMotor.getPosition().getValueAsDouble())   // TEST 2!!!
         );
     }
 
     public SwerveModulePosition getPosition(){
         return new SwerveModulePosition(
-            Conversions.rotationsToMeters(mDriveMotor.getPosition().getValue().magnitude(), Constants.Swerve.wheelCircumference), //TEST!!
-            Rotation2d.fromRotations(mAngleMotor.getPosition().getValue().magnitude()) // TEST!!
+            Conversions.rotationsToMeters(mDriveMotor.getPosition().getValueAsDouble(), Constants.Swerve.wheelCircumference), //TEST 2!!
+            Rotation2d.fromRotations(mAngleMotor.getPosition().getValueAsDouble()) // TEST 2!!
         );
     }
 }
