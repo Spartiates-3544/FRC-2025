@@ -1,9 +1,13 @@
 package frc.robot;
 
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -27,18 +31,27 @@ public class RobotContainer {
     private final int rotationAxis = XboxController.Axis.kRightX.value;
 
     /* Driver Buttons */
-    private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
+    private final JoystickButton LeverBras = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+    private final JoystickButton BaisserBras = new JoystickButton(driver, XboxController.Button.kA.value);
+    private final JoystickButton RamasserBallon = new JoystickButton(driver, XboxController.Button.kX.value);
+    private final JoystickButton OuttakeBallon = new JoystickButton(driver, XboxController.Button.kB.value);
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
+    private final Bras systemeBras = new Bras();
+    private final RamasseurBallon systemeBallon = new RamasseurBallon();
+    private final MonterBras commande_monterBras = new MonterBras(systemeBras);
+    private final BaisserBras commande_BaisserBras = new BaisserBras(systemeBras);
+    private final RamasserBallon commande_ramasserBallon = new RamasserBallon(systemeBallon);
+    private final EjectBallon commande_outtake = new EjectBallon(systemeBallon);
+//    private final EjectBallon commande_EjectBallon = new EjectBallon(RamasseurBallon);
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         s_Swerve.setDefaultCommand(
-            new TeleopSwerve(
-                s_Swerve, 
+            new TeleopSwerve(s_Swerve, 
                 () -> -driver.getRawAxis(translationAxis), 
                 () -> -driver.getRawAxis(strafeAxis), 
                 () -> -driver.getRawAxis(rotationAxis), 
@@ -46,6 +59,7 @@ public class RobotContainer {
             )
         );
 
+        SmartDashboard.putData(CommandScheduler.getInstance());
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -58,7 +72,13 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
+        // zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
+        LeverBras.onTrue(commande_monterBras);
+        BaisserBras.onTrue(commande_BaisserBras);
+        //EjectBallon.onTrue(commande_EjectBallon);
+        RamasserBallon.onTrue(commande_ramasserBallon);
+        OuttakeBallon.onTrue(commande_outtake.withTimeout(1));
+       
     }
 
     /**
