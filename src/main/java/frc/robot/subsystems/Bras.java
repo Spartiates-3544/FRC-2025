@@ -76,7 +76,7 @@ private DutyCycleEncoder encodeur;
 
     public Boolean brasBaisse(){
 
-        if (encodeur.get() >= 0.25){
+        if (encodeur.get() >= 0.22){
 
             return true;
 

@@ -66,7 +66,7 @@ private DigitalInput limitSwitch1;
     }
 
      public boolean BallonPresent() {
-        return !limitSwitch1.get();
+        return limitSwitch1.get();
      }
 
     @Override

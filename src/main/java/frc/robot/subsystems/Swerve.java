@@ -31,18 +31,11 @@ public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
     public AHRS gyro;
-    public RobotConfig config;
 
     public Swerve() {
         //gyro = new Pigeon2(Constants.Swerve.pigeonID);
         //gyro.getConfigurator().apply(new Pigeon2Configuration());
         //gyro.setYaw(0);
-
-        try {
-            config = RobotConfig.fromGUISettings();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         gyro = new AHRS(NavXComType.kMXP_SPI);
         gyro.reset();
@@ -54,6 +47,7 @@ public class Swerve extends SubsystemBase {
             new SwerveModule(3, Constants.Swerve.Mod3.constants)
         };
 
+        Constants.AutoConstants.dimensions();
         AutoBuilder.configure(
          this::getPose,
          this::setPose,
@@ -63,7 +57,7 @@ public class Swerve extends SubsystemBase {
             new PIDConstants(1, 0, 0),
             new PIDConstants(3.9, 0, 0)
          ),
-         config,
+         Constants.AutoConstants.config,
          () -> {
             var alliance = DriverStation.getAlliance();
 
@@ -156,7 +150,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public Rotation2d getGyroYaw() {
-        return Rotation2d.fromDegrees(gyro.getYaw());
+        return Rotation2d.fromDegrees(-gyro.getYaw());
     }
 
     public void resetModulesToAbsolute(){
