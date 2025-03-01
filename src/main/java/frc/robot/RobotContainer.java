@@ -54,7 +54,7 @@ public class RobotContainer {
     private final RamasserBallon commande_ramasserBallon = new RamasserBallon(systemeBallon);
     private final EjectBallon commande_outtake = new EjectBallon(systemeBallon);
     private final EjectTube commande_outtakeTube = new EjectTube(systemeTube);
-        private SendableChooser<Command> autoChooser;
+    private SendableChooser<Command> autoChooser;
 
 
 
@@ -86,8 +86,8 @@ public class RobotContainer {
         /* Driver Buttons */
         // zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
         LeverBras.onTrue(commande_monterBras);
-        BaisserBras.onTrue(commande_BaisserBras);
-        RamasserBallon.onTrue(commande_ramasserBallon);
+        BaisserBras.onTrue(Commands.parallel(commande_BaisserBras, commande_ramasserBallon));
+        // RamasserBallon.onTrue(commande_ramasserBallon);
         OuttakeBallon.onTrue(commande_outtake.withTimeout(1));
         OuttakeTube.onTrue(commande_outtakeTube.withTimeout(1.5));
         reset.onTrue(Commands.runOnce(() -> s_Swerve.setHeading(Rotation2d.fromDegrees(180))));
