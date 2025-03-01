@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.546,
-        "y": 5.82875
+        "x": 1.23825,
+        "y": 5.84825
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.5459999999999996,
-        "y": 5.82875
+        "x": 2.2819806518428694,
+        "y": 5.825160077495764
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.158999999995581,
-        "y": 4.678250000003285
+        "x": 3.6270000000000007,
+        "y": 5.4582500000000005
       },
       "prevControl": {
-        "x": 3.217499999991163,
-        "y": 5.195000000006568
+        "x": 2.455979012570432,
+        "y": 5.85563314131151
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,14 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Placer Tube",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -42,7 +49,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -57.9946167919165
   },
   "reversed": false,
   "folder": null,

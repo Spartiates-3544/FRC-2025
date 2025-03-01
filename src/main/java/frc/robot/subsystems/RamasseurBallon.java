@@ -61,7 +61,7 @@ private DigitalInput limitSwitch1;
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        SmartDashboard.putBoolean("switch", limitSwitch1.get());
+        SmartDashboard.putBoolean("switchBallon", limitSwitch1.get());
 
     }
 

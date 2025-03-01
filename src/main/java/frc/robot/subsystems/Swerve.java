@@ -8,6 +8,11 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.util.PathPlannerLogging;
 //import com.ctre.phoenix6.configs.Pigeon2Configuration;
 //import com.ctre.phoenix6.hardware.Pigeon2;
 import com.studica.frc.AHRS;
@@ -17,6 +22,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,13 +31,20 @@ public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
     public AHRS gyro;
+    public RobotConfig config;
 
     public Swerve() {
         //gyro = new Pigeon2(Constants.Swerve.pigeonID);
         //gyro.getConfigurator().apply(new Pigeon2Configuration());
         //gyro.setYaw(0);
 
-        gyro= new AHRS(NavXComType.kMXP_SPI);
+        try {
+            config = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        gyro = new AHRS(NavXComType.kMXP_SPI);
         gyro.reset();
 
         mSwerveMods = new SwerveModule[] {
@@ -41,6 +54,28 @@ public class Swerve extends SubsystemBase {
             new SwerveModule(3, Constants.Swerve.Mod3.constants)
         };
 
+        AutoBuilder.configure(
+         this::getPose,
+         this::setPose,
+         this::getRobotRelativeSpeeds,
+         (speeds, feedforwards) -> this.setChassisSpeeds(speeds),
+         new PPHolonomicDriveController(
+            new PIDConstants(1, 0, 0),
+            new PIDConstants(3.9, 0, 0)
+         ),
+         config,
+         () -> {
+            var alliance = DriverStation.getAlliance();
+
+            if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+            }
+
+            return false;
+         },
+         this);
+
+        //  PathPlannerLogging.setLogActivePathCallback((poses) -> field.getObject("traj").setPoses(poses));
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions());
     }
 
@@ -64,6 +99,16 @@ public class Swerve extends SubsystemBase {
             mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
         }
     }    
+
+    public ChassisSpeeds getRobotRelativeSpeeds() {
+        return Constants.Swerve.swerveKinematics.toChassisSpeeds(getModuleStates());
+    }
+
+    public void setChassisSpeeds(ChassisSpeeds speeds) {
+        ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(speeds, 0.02);
+        SwerveModuleState[] states = Constants.Swerve.swerveKinematics.toSwerveModuleStates(targetSpeeds);
+        setModuleStates(states);
+    }
 
     /* Used by SwerveControllerCommand in Auto */
     public void setModuleStates(SwerveModuleState[] desiredStates) {
