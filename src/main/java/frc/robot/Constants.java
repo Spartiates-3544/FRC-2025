@@ -10,7 +10,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
+// import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.lib.util.COTSTalonFXSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
@@ -82,9 +82,9 @@ public final class Constants {
 
         /* Swerve Profiling Values */
         /** Meters per Second */
-        public static final double maxSpeed = 1.5; //TODO: This must be tuned to specific robot
+        public static final double maxSpeed = 1.5; 
         /** Radians per Second */
-        public static final double maxAngularVelocity = 3.14 / 3; //TODO: This must be tuned to specific robot
+        public static final double maxAngularVelocity = 0.785;
 
         /* Neutral Modes */
         public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Coast;
@@ -140,18 +140,19 @@ public final class Constants {
 //     }
 
     public static final class ArmConstants {
-        public static final double kP = 0;
+        public static final double kP = 1.0;
+        // public static final double PIDTolerance = 0.05;
     }
 
-    public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot
-        public static final double kMaxSpeedMetersPerSecond = 1;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 0.5;
-        public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
-        public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
+    public static final class AutoConstants {
+        // public static final double kMaxSpeedMetersPerSecond = 1;
+        // public static final double kMaxAccelerationMetersPerSecondSquared = 0.5;
+        // public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
+        // public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
     
-        public static final double kPXController = 1;
-        public static final double kPYController = 1;
-        public static final double kPThetaController = 1;
+        // public static final double kPXController = 1;
+        // public static final double kPYController = 1;
+        // public static final double kPThetaController = 1;
 
         //FL, FR, BL, BR
         // public static final Translation2d[] moduleOffsets = {           
@@ -178,8 +179,8 @@ public final class Constants {
         public static final RobotConfig config = new RobotConfig(45, 2.81854, moduleConfig, moduleOffsets);
 
         /* Constraint for the motion profilied robot angle controller */
-        public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
-            new TrapezoidProfile.Constraints(
-                kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+        // public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
+        //     new TrapezoidProfile.Constraints(
+        //         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
     }
 }

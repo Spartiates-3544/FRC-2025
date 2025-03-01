@@ -2,20 +2,16 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
-import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -38,7 +34,7 @@ public class RobotContainer {
     private final JoystickButton LeverBras = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton reset = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton BaisserBras = new JoystickButton(driver, XboxController.Button.kA.value);
-    private final JoystickButton RamasserBallon = new JoystickButton(driver, XboxController.Button.kX.value);
+    // private final JoystickButton RamasserBallon = new JoystickButton(driver, XboxController.Button.kX.value);
     private final JoystickButton OuttakeBallon = new JoystickButton(driver, XboxController.Button.kB.value);
     private final JoystickButton OuttakeTube = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
 
@@ -84,12 +80,13 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        // zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
-        LeverBras.onTrue(commande_monterBras);
-        BaisserBras.onTrue(Commands.parallel(commande_BaisserBras, commande_ramasserBallon));
+        // LeverBras.onTrue(commande_monterBras);
+        // LeverBras.onTrue(Commands.runOnce(() -> systemeBras.setPosition(0.10), systemeBras));
+        // BaisserBras.onTrue(Commands.parallel(commande_BaisserBras, commande_ramasserBallon));
+        BaisserBras.toggleOnTrue(Commands.parallel(Commands.runOnce(() -> systemeBras.setPosition(0.22), systemeBras), commande_ramasserBallon).andThen(Commands.runOnce(() -> systemeBras.setPosition(0.10), systemeBras)));
         // RamasserBallon.onTrue(commande_ramasserBallon);
-        OuttakeBallon.onTrue(commande_outtake.withTimeout(1));
-        OuttakeTube.onTrue(commande_outtakeTube.withTimeout(1.5));
+        OuttakeBallon.toggleOnTrue(commande_outtake);
+        OuttakeTube.toggleOnTrue(commande_outtakeTube);
         reset.onTrue(Commands.runOnce(() -> s_Swerve.setHeading(Rotation2d.fromDegrees(180))));
     }
 
