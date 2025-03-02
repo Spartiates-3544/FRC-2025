@@ -58,8 +58,8 @@ public class RobotContainer {
     public RobotContainer() {
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(s_Swerve, 
-                () -> -driver.getRawAxis(translationAxis), 
-                () -> -driver.getRawAxis(strafeAxis), 
+                () -> -Math.copySign(Math.pow(driver.getRawAxis(translationAxis), 2), driver.getRawAxis(translationAxis)), 
+                () -> -Math.copySign(Math.pow(driver.getRawAxis(strafeAxis), 2), driver.getRawAxis(strafeAxis)), 
                 () -> -driver.getRawAxis(rotationAxis), 
                 () -> false
             )
@@ -83,11 +83,15 @@ public class RobotContainer {
         // LeverBras.onTrue(commande_monterBras);
         // LeverBras.onTrue(Commands.runOnce(() -> systemeBras.setPosition(0.10), systemeBras));
         // BaisserBras.onTrue(Commands.parallel(commande_BaisserBras, commande_ramasserBallon));
-        BaisserBras.toggleOnTrue(Commands.parallel(Commands.runOnce(() -> systemeBras.setPosition(0.22), systemeBras), commande_ramasserBallon).andThen(Commands.runOnce(() -> systemeBras.setPosition(0.10), systemeBras)));
+        BaisserBras.toggleOnTrue(Commands.parallel(Commands.runOnce(() -> systemeBras.setPosition(0.24), systemeBras), commande_ramasserBallon).finallyDo((interrupted) -> systemeBras.setPosition(0.135)));
         // RamasserBallon.onTrue(commande_ramasserBallon);
         OuttakeBallon.toggleOnTrue(commande_outtake);
         OuttakeTube.toggleOnTrue(commande_outtakeTube);
         reset.onTrue(Commands.runOnce(() -> s_Swerve.setHeading(Rotation2d.fromDegrees(180))));
+    }
+
+    public void stopArm() {
+        systemeBras.setVitesse(0);
     }
 
     /**

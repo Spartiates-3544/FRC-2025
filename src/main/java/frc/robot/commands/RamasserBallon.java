@@ -54,7 +54,7 @@ public class RamasserBallon extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        m_ramasseurBallon.prendre(-0.75);
+        m_ramasseurBallon.prendre(-1);
     }
 
     // Called once the command ends or is interrupted.

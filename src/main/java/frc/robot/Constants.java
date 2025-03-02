@@ -37,6 +37,12 @@ public final class Constants {
             new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
             new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
 
+        // public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
+        //     new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
+        //     new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0),
+        //     new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
+        //     new Translation2d(wheelBase / 2.0, -trackWidth / 2.0));
+
         /* Module Gear Ratios */
         public static final double driveGearRatio = chosenModule.driveGearRatio;
         public static final double angleGearRatio = chosenModule.angleGearRatio;
@@ -82,7 +88,7 @@ public final class Constants {
 
         /* Swerve Profiling Values */
         /** Meters per Second */
-        public static final double maxSpeed = 1.5; 
+        public static final double maxSpeed = 1; 
         /** Radians per Second */
         public static final double maxAngularVelocity = 0.785;
 
@@ -140,7 +146,7 @@ public final class Constants {
 //     }
 
     public static final class ArmConstants {
-        public static final double kP = 1.0;
+        public static final double kP = 1.5;
         // public static final double PIDTolerance = 0.05;
     }
 

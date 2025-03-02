@@ -55,6 +55,7 @@ public class Bras extends SubsystemBase {
         addChild("Motor Controller 1",moteurbras);
         moteurbras.setInverted(false);
         pid = new PIDController(Constants.ArmConstants.kP, 0, 0);
+        pid.setSetpoint(0.12);
         // pid.setTolerance(Constants.ArmConstants.PIDTolerance);
     }
 
