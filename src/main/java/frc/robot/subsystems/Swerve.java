@@ -44,15 +44,15 @@ public class Swerve extends SubsystemBase {
             new SwerveModule(3, Constants.Swerve.Mod3.constants)
         };
 
-        Constants.AutoConstants.dimensions();
+        // Constants.AutoConstants.dimensions();
         AutoBuilder.configure(
          this::getPose,
          this::setPose,
          this::getRobotRelativeSpeeds,
          (speeds, feedforwards) -> this.setChassisSpeeds(speeds),
          new PPHolonomicDriveController(
-            new PIDConstants(1, 0, 0),
-            new PIDConstants(3.9, 0, 0)
+            new PIDConstants(Constants.AutoConstants.translationkP, 0, 0),
+            new PIDConstants(Constants.AutoConstants.rotationkP, 0, 0)
          ),
          Constants.AutoConstants.config,
          () -> {

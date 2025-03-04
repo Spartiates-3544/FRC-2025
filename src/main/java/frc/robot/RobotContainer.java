@@ -1,5 +1,8 @@
 package frc.robot;
+import org.ejml.dense.row.decompose.TriangularSolver_CDRM;
+
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -10,8 +13,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -37,6 +41,7 @@ public class RobotContainer {
     // private final JoystickButton RamasserBallon = new JoystickButton(driver, XboxController.Button.kX.value);
     private final JoystickButton OuttakeBallon = new JoystickButton(driver, XboxController.Button.kB.value);
     private final JoystickButton OuttakeTube = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
+    private final Trigger reverseTube = new Trigger(() -> driver.getRawAxis(3) >= 0.2);
 
 
     /* Subsystems */
@@ -53,14 +58,13 @@ public class RobotContainer {
     private SendableChooser<Command> autoChooser;
 
 
-
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(s_Swerve, 
                 () -> -Math.copySign(Math.pow(driver.getRawAxis(translationAxis), 2), driver.getRawAxis(translationAxis)), 
                 () -> -Math.copySign(Math.pow(driver.getRawAxis(strafeAxis), 2), driver.getRawAxis(strafeAxis)), 
-                () -> -driver.getRawAxis(rotationAxis), 
+                () -> -Math.copySign(Math.pow(driver.getRawAxis(rotationAxis), 2), driver.getRawAxis(rotationAxis)), 
                 () -> false
             )
         );
@@ -83,11 +87,17 @@ public class RobotContainer {
         // LeverBras.onTrue(commande_monterBras);
         // LeverBras.onTrue(Commands.runOnce(() -> systemeBras.setPosition(0.10), systemeBras));
         // BaisserBras.onTrue(Commands.parallel(commande_BaisserBras, commande_ramasserBallon));
-        BaisserBras.toggleOnTrue(Commands.parallel(Commands.runOnce(() -> systemeBras.setPosition(0.24), systemeBras), commande_ramasserBallon).finallyDo((interrupted) -> systemeBras.setPosition(0.135)));
+        BaisserBras.toggleOnTrue(Commands.parallel(Commands.runOnce(() -> systemeBras.setPosition(0.24), systemeBras), commande_ramasserBallon).finallyDo((interrupted) -> systemeBras.setPosition(0.135
+        )));
         // RamasserBallon.onTrue(commande_ramasserBallon);
         OuttakeBallon.toggleOnTrue(commande_outtake);
         OuttakeTube.toggleOnTrue(commande_outtakeTube);
         reset.onTrue(Commands.runOnce(() -> s_Swerve.setHeading(Rotation2d.fromDegrees(180))));
+        reverseTube.whileTrue(Commands.runEnd(() -> systemeTube.prendreTube(1), () -> systemeTube.prendreTube(0), systemeTube));
+    }
+
+    private void registerCommands() {
+        NamedCommands.registerCommand("autoPlace", RamasseurTube.EjectTube());
     }
 
     public void stopArm() {
@@ -102,4 +112,5 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
         return autoChooser.getSelected();    }
+        
 }

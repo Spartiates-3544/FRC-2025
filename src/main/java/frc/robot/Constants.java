@@ -88,9 +88,9 @@ public final class Constants {
 
         /* Swerve Profiling Values */
         /** Meters per Second */
-        public static final double maxSpeed = 1; 
+        public static final double maxSpeed = 1.5; 
         /** Radians per Second */
-        public static final double maxAngularVelocity = 0.785;
+        public static final double maxAngularVelocity = 1.8;
 
         /* Neutral Modes */
         public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Coast;
@@ -146,7 +146,7 @@ public final class Constants {
 //     }
 
     public static final class ArmConstants {
-        public static final double kP = 1.5;
+        public static final double kP = 1.3;
         // public static final double PIDTolerance = 0.05;
     }
 
@@ -183,6 +183,9 @@ public final class Constants {
         public static final DCMotor motorConfig = DCMotor.getFalcon500(1);
         public static final ModuleConfig moduleConfig = new ModuleConfig(0.0508, 5, 1, motorConfig, 6.12, 40, 1);
         public static final RobotConfig config = new RobotConfig(45, 2.81854, moduleConfig, moduleOffsets);
+        
+        public static final double translationkP = 2;
+        public static final double rotationkP = 4.1;
 
         /* Constraint for the motion profilied robot angle controller */
         // public static final TrapezoidProfile.Constraints kThetaControllerConstraints =

@@ -70,7 +70,7 @@ public class Bras extends SubsystemBase {
 
     public Boolean brasLeve(){
 
-        if(encodeur.get() <= 0.10){
+        if(encodeur.get() <= 0.08){
 
             return true;
         }
