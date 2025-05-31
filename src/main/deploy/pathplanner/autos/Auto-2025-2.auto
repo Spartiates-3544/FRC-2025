@@ -1,0 +1,61 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Deplacement2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoPlace"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef to Station"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Station To Reef 1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoPlace"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": " Reef To Station 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Station To Reef 1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoPlace"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

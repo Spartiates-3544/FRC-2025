@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "Deplacement3"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "autoPlace"

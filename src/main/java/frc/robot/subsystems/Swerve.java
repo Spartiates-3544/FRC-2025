@@ -8,6 +8,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
+import com.ctre.phoenix6.configs.Pigeon2Configuration;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -20,6 +22,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -27,15 +30,20 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
-    public AHRS gyro;
+    // public AHRS gyro;
+    public Pigeon2 pigeon;
+    // public ADIS16448_IMU gyro;
 
     public Swerve() {
         //gyro = new Pigeon2(Constants.Swerve.pigeonID);
         //gyro.getConfigurator().apply(new Pigeon2Configuration());
         //gyro.setYaw(0);
 
-        gyro = new AHRS(NavXComType.kMXP_SPI);
-        gyro.reset();
+        // gyro = new AHRS(NavXComType.kMXP_SPI);
+        // gyro = new ADIS16448_IMU();
+        // gyro.reset();
+
+        pigeon = new Pigeon2(Constants.Swerve.pigeonID);
 
         mSwerveMods = new SwerveModule[] {
             new SwerveModule(0, Constants.Swerve.Mod0.constants),
@@ -142,13 +150,16 @@ public class Swerve extends SubsystemBase {
         swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(), new Pose2d(getPose().getTranslation(), heading));
     }
 
-    public void zeroHeading(){
+    public void  zeroHeading(){
         swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(), new Pose2d(getPose().getTranslation(), new Rotation2d()));
     }
 
     public Rotation2d getGyroYaw() {
-        return Rotation2d.fromDegrees(-gyro.getYaw());
+        // return Rotation2d.fromDegrees(-gyro.getYaw());
+        return pigeon.getRotation2d();
+        // return Rotation2d.fromDegrees(gyro.getAngle());
     }
+    
 
     public void resetModulesToAbsolute(){
         for(SwerveModule mod : mSwerveMods){
@@ -159,6 +170,8 @@ public class Swerve extends SubsystemBase {
     @Override
     public void periodic(){
         swerveOdometry.update(getGyroYaw(), getModulePositions());
+        // SmartDashboard.putNumber("Angle", gyro.getYaw());
+        SmartDashboard.putNumber("Angle", pigeon.getYaw(true).getValueAsDouble());
 
         for(SwerveModule mod : mSwerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " CANcoder", mod.getCANcoder().getDegrees());

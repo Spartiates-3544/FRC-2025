@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.23825,
-        "y": 5.84825
+        "x": 1.5394736842105263,
+        "y": 7.238651315789473
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.2819806518428694,
-        "y": 5.825160077495764
+        "x": 4.675456033668238,
+        "y": 5.743475767034993
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.6270000000000007,
-        "y": 5.4582500000000005
+        "x": 5.484375000000736,
+        "y": 5.352796052628423
       },
       "prevControl": {
-        "x": 2.455979012570432,
-        "y": 5.85563314131151
+        "x": 5.161437134745581,
+        "y": 5.54004372911183
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,31 +31,24 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "Placer Tube",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
+    "maxVelocity": 2.5,
     "maxAcceleration": 3.0,
-    "maxAngularVelocity": 80.0,
-    "maxAngularAcceleration": 720.0,
+    "maxAngularVelocity": 100.0,
+    "maxAngularAcceleration": 300.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 122.0
+    "rotation": 60.642246457208635
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -53.88065915052028
   },
   "useDefaultConstraints": true
 }
