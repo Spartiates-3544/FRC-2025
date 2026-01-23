@@ -53,12 +53,12 @@ public class Bras extends SubsystemBase {
         encodeur = new DutyCycleEncoder(0);
 
         moteurbras = new TalonFX(60);
-        // TalonFXConfiguration config = new TalonFXConfiguration();
+        TalonFXConfiguration config = new TalonFXConfiguration();
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        // moteurbras.setNeutralMode(NeutralModeValue.Brake);
+        moteurbras.setNeutralMode(NeutralModeValue.Brake);
         // addChild("Motor Controller 1",moteurbras);
-        // moteurbras.getConfigurator().apply(config);
+        moteurbras.getConfigurator().apply(config);
         pid = new PIDController(Constants.ArmConstants.kP, 0, 0);
         pid.setSetpoint(0.12);
         // pid.setTolerance(Constants.ArmConstants.PIDTolerance);
